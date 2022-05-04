@@ -50,7 +50,7 @@
 
     <!-- 답변 -->
     <h5 class="border-bottom my-3 py-2">{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
-    {% for answer in question.answer_set.all %}
+    {% for answer in answer_list %}
       <a id="answer_{{answer.id}}"></a>
       <div class="card my-3">
         <div class="card-body">
@@ -78,6 +78,46 @@
       </div>
     {% endfor %}
 
+    <!--페이징처리 시작-->
+    <ul class="pagination justify-content-center">
+      <!--이젠페이지-->
+      {% if answer_list.has_previous %}
+        <li class="page-item">
+          <a href="javascript:void(0)" data-page="{{answer_list.previous_page_number}}" class="page-link">이전</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a href="#" class="page-link" tabindex="-1" aria-disabled="true">이전</a>
+        </li>
+      {% endif %}
+
+      <!--페이지리스트-->
+      {% for page_number in answer_list.paginator.page_range %}
+        {% if page_number == answer_list.number %}
+          <li class="page-item active" aria-current="page">
+            <a href="javascript:void(0)" data-page="{{page_number}}" class="page-link">{{page_number}}</a>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a href="javascript:void(0)" data-page="{{page_number}}" class="page-link">{{page_number}}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+
+      <!--다음페이지-->
+      {% if answer_list.has_next %}
+        <li class="page-item">
+          <a href="javascript:void(0)" data-page="{{answer_list.next_page_number}}" class="page-link">다음</a>
+        </li>
+      {% else %}
+        <li class="page-item disabled">
+          <a href="#" class="page-link" tabindex="-1" aria-disabled="true">다음</a>
+        </li>
+      {% endif %}
+    </ul>
+
+    <!--페이징처리 끝-->
+
     <!-- 답변등록 -->
     <form action="{% url 'pybo:answer_create' question.id %}" method="post" class="my-3">
       {% csrf_token %}
@@ -101,6 +141,10 @@
       <input type="submit" value="답변등록" class="btn btn-primary">
     </form>
   </div>
+
+  <form action="{% url 'pybo:detail' question.id %}" id="searchForm" method="get">
+    <input type="hidden" id="page" name="answer_page" value="{{answer_page}}">
+  </form>
 {% endblock %}
 
 {% block script %}
@@ -126,5 +170,20 @@
           };
         });
       });
+
+    const page_elements = document.getElementsByClassName("page-link")
+    Array
+      .from(page_elements)
+      .forEach(function (element) {
+        element.addEventListener('click', function () {
+          document
+            .getElementById('page')
+            .value = this.dataset.page;
+          document
+            .getElementById('searchForm')
+            .submit()
+        });
+      });
   </script>
+
 {% endblock %}

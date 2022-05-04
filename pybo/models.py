@@ -23,7 +23,7 @@ class Answer(models.Model):
     voter = models.ManyToManyField(User, related_name='voter_answer')
     
     def __str__(self):
-        return self.question
+        return self.question.subject
     
     
     
