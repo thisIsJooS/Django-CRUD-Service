@@ -3,17 +3,17 @@
   안녕하세요~
 {% endblock %}
 {% block content %}
-  <ul>
-    <li>
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-action">
       <a href="{% url 'pybo:question_list' %}">질문답변게시판</a>
     </li>
-    <li>
+    <li class="list-group-item list-group-item-action">
       <a href="{% url 'pybo:answer_list' %}">최근답변</a>
     </li>
-    <li>
+    <li class="list-group-item list-group-item-action">
       <a href="#">홍보게시판</a>
     </li>
-    <li>
+    <li class="list-group-item list-group-item-action">
       <a href="http://127.0.0.1:8000/admin">관리자페이지</a>
     </li>
   </ul>
