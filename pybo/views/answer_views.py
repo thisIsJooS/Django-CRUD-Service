@@ -4,7 +4,9 @@ from django.http import HttpResponseNotAllowed
 from django.shortcuts import render, get_object_or_404, redirect, resolve_url
 from django.utils import timezone
 from ..forms import AnswerForm
+from django.core.paginator import Paginator
 from ..models import Question, Answer
+from django.db.models import Q
 
 @login_required(login_url='common:login')
 def answer_create(request, question_id):
@@ -69,3 +71,22 @@ def answer_vote(request, answer_id):
     return redirect('{}#answer_{}'.format(
         resolve_url('pybo:question_detail', question_id=answer.question.id), answer.id
     ))
+    
+
+def answer_list(request):
+    page = request.GET.get('page', '1')
+    kw = request.GET.get('kw', '')
+    answer_list = Answer.objects.order_by('-create_date')
+    if kw:
+        answer_list = answer_list.filter(
+        Q(question__subject__icontains=kw) | # 제목 검색
+        Q(question__content__icontains=kw) | # 내용 검색
+        Q(content__icontains=kw) | # 답변 내용
+        Q(question__author__username__icontains=kw) | # 질문 글쓴이 검색
+        Q(author__username__icontains=kw)  # 답변 글쓴이
+    ).distinct()
+        
+    paginator = Paginator(answer_list, 10)
+    page_obj = paginator.get_page(page)
+    context = {'answer_list': page_obj, 'page': page, 'kw':kw}
+    return render(request, 'pybo/answer_list.html', context)
