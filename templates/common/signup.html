@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block title %}
+  회원가입
+{% endblock %}
 {% block content %}
   <div class="container my-3">
     <form method="post" action="{% url 'common:signup' %}">

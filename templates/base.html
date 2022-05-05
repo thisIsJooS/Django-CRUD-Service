@@ -13,7 +13,9 @@
     <link rel="stylesheet" type"text/css"="type" text/css""="text/css" "" href="{% static 'style.css' %} ">
     <!--Bootstrap JS-->
     <script src="{% static 'bootstrap.min.js' %}" defer="defer"></script>
-    <title>Hello, pybo!</title>
+    <title>
+      {% block title %}{% endblock %}
+    </title>
   </head>
 
   <body>
