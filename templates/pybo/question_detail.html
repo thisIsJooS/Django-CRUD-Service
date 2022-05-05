@@ -142,7 +142,7 @@
     </form>
   </div>
 
-  <form action="{% url 'pybo:detail' question.id %}" id="searchForm" method="get">
+  <form action="{% url 'pybo:question_detail' question.id %}" id="searchForm" method="get">
     <input type="hidden" id="page" name="answer_page" value="{{answer_page}}">
   </form>
 {% endblock %}

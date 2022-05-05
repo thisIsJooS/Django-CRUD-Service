@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+  <ul>
+    <li>
+      <a href="{% url 'pybo:question_list' %}">질문답변게시판</a>
+    </li>
+    <li>
+      <a href="#">비밀게시판</a>
+    </li>
+    <li>
+      <a href="#">홍보게시판</a>
+    </li>
+    <li>
+      <a href="http://127.0.0.1:8000/admin">관리자페이지</a>
+    </li>
+  </ul>
+{% endblock %}
