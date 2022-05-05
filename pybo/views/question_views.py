@@ -33,7 +33,9 @@ def question_detail(request, question_id):
     answer_list = question.answer_set.all().annotate(count=Count('voter')).order_by('-count')
     paginator = Paginator(answer_list, 3) # 페이지당 3개씩 보여주기
     page_obj = paginator.get_page(page)
-    context = {'question' : question, 'answer_list': page_obj, 'answer_page':page}
+    question.hits += 1
+    question.save()
+    context = {'question' : question, 'answer_list': page_obj, 'answer_page':page, 'hits': question.hits}
     return render(request, 'pybo/question_detail.html', context)
 
 
